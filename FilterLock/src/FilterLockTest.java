@@ -1,16 +1,16 @@
-
 public class FilterLockTest {
 
     public static class FilterLock {
         static int mDepth = 0;
         static volatile int[] mLevel;
         static volatile int[] mVictim;
+
         public static void setDepth(int depth) {
             mDepth = depth;
             mLevel = new int[mDepth];
             mVictim = new int[mDepth];
         }
-        
+
         public static void lock(int myId) {
             for (int level = 1; level < mDepth; level++) {
                 mLevel[myId] = level;
@@ -31,20 +31,21 @@ public class FilterLockTest {
                     }
                 }
             }
-            
+
         }
-        
+
         public static void unlock(int myId) {
             mLevel[myId] = 0;
         }
     }
-    
+
     static class SimpleWork implements Runnable {
         int mId = 0;
-        
+
         public SimpleWork(int id) {
             mId = id;
         }
+
         public void run() {
             try {
                 Thread.currentThread();
@@ -63,16 +64,16 @@ public class FilterLockTest {
     }
 
     private static int N = 64;
-    
+
     public static final void main(String[] args) {
         System.out.println("start!");
         FilterLock.setDepth(N);
         Thread workers[] = new Thread[N];
         for (int i = 0; i < N; i++) {
-            workers[i] = new Thread(new SimpleWork(i));            
+            workers[i] = new Thread(new SimpleWork(i));
             workers[i].start();
         }
-        for (int i = 0; i < N; i++) {            
+        for (int i = 0; i < N; i++) {
             try {
                 workers[i].join();
             } catch (InterruptedException e) {
