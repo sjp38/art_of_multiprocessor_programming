@@ -1,4 +1,4 @@
-This is implementation of code in "The Art Of Multiprocessor Programming"
+This is implementation of code in the book "The Art Of Multiprocessor Programming"
 
 # License
 GPL v3
